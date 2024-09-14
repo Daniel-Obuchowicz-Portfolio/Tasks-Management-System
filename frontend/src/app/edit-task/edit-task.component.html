@@ -1,0 +1,140 @@
+<div class="min-h-screen flex font-sans">
+
+  <!-- Sidebar and Header -->
+  <app-header [title]="'User Details'" [username]="username" class="min-h-screen bg-white shadow-lg"></app-header>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 bg-custom-bg rounded-custom">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-semibold">Edit Task</h1>
+        <p class="text-gray-600">Today is {{ currentDate | date: 'fullDate' }}</p>
+      </div>
+      <button [routerLink]="['/tasks']" class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600">
+        Powrót
+      </button>
+    </div>
+    <div class="w-full bg-white p-8 shadow-lg rounded-md mx-auto">
+      <!-- Edit Task Form -->
+      <form [formGroup]="editTaskForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto">
+        <!-- Error message -->
+        <div *ngIf="errorMessage"
+          class="bg-red-100 block border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+          <strong class="font-bold block">Error!</strong>
+          <span class="block sm:inline">{{ errorMessage }}</span>
+        </div>
+
+        <!-- Success message -->
+        <div *ngIf="successMessage"
+          class="bg-green-100 block border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+          <strong class="font-bold block">Success!</strong>
+          <span class="block sm:inline">{{ successMessage }}</span>
+        </div>
+
+        <!-- Title Field -->
+        <div class="mb-4">
+          <input formControlName="title" class="w-full p-3 border rounded" placeholder="Title" />
+          <div *ngIf="editTaskForm.get('title')?.invalid && editTaskForm.get('title')?.touched" class="text-red-500">
+            Title is required.
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div class="mb-4">
+          <textarea formControlName="description" class="w-full p-3 border rounded"
+            placeholder="Description"></textarea>
+          <div *ngIf="editTaskForm.get('description')?.invalid && editTaskForm.get('description')?.touched"
+            class="text-red-500">
+            Description is required.
+          </div>
+        </div>
+
+        <!-- Status Field -->
+        <div class="mb-4">
+          <select formControlName="status" class="w-full p-3 border rounded">
+            <option value="open">Open</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <!-- Priority Field -->
+        <div class="mb-4">
+          <select formControlName="priority" class="w-full p-3 border rounded">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        <!-- Assigned Users Search Field -->
+        <div class="mb-4">
+          <label for="assignedUsers" class="block font-semibold">Assign Users</label>
+          <input type="text" id="assignedUsersSearch" placeholder="Search for users..." (input)="searchUsers($event)"
+            class="w-full p-2 border rounded" />
+
+          <!-- Display search results -->
+          <ul *ngIf="searchResults.length > 0" class="mt-2 border p-2">
+            <li *ngFor="let user of searchResults" (click)="selectUser(user)" class="cursor-pointer hover:bg-gray-200">
+              {{ user.username }}
+            </li>
+          </ul>
+
+          <!-- Display selected users -->
+          <div class="mt-4">
+            <label class="block font-semibold">Assigned Users:</label>
+            <ul>
+              <li *ngFor="let user of selectedUsers">
+                {{ user.username }} (ID: {{ user.id }})
+                <button type="button" (click)="removeUser(user.id)" class="text-red-500 hover:underline">Remove</button>
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="editTaskForm.get('assignedUsers')?.invalid && editTaskForm.get('assignedUsers')?.touched"
+            class="text-red-500">
+            At least one user must be assigned.
+          </div>
+        </div>
+
+        <!-- Due Date Field -->
+        <div class="mb-4">
+          <input type="date" formControlName="dueDate" class="w-full p-3 border rounded" />
+          <div *ngIf="editTaskForm.get('dueDate')?.invalid && editTaskForm.get('dueDate')?.touched"
+            class="text-red-500">
+            Due Date is required.
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600"
+          [disabled]="isLoading">
+          {{ isLoading ? 'Updating...' : 'Update Task' }}
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Right Sidebar (Calendar) -->
+  <aside class="w-72 bg-white p-6 hidden lg:block">
+    <h2 class="text-lg font-semibold mb-6">Calendar</h2>
+    <ul class="space-y-4 text-gray-700">
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">10:00</span>
+        <span>Dribbble shot Facebook Brand</span>
+      </li>
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">13:20</span>
+        <span>Design Task Management</span>
+      </li>
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">15:00</span>
+        <span>Mobile App Research</span>
+      </li>
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">10:00</span>
+        <span>UX Research Sleep App</span>
+      </li>
+    </ul>
+  </aside>
+</div>

@@ -1,0 +1,68 @@
+<div class="min-h-screen flex font-sans">
+
+  <!-- Sidebar and Header -->
+  <app-header [title]="'User Details'" [username]="username" class="min-h-screen bg-white shadow-lg"></app-header>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 bg-custom-bg rounded-custom">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-semibold">User Details</h1>
+        <p class="text-gray-600">Today is Monday, 20 October 2021</p>
+      </div>
+      <button [routerLink]="['/users']" class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600">
+        Powrót
+      </button>      
+    </div>
+    <div class="w-full bg-white p-8 shadow-lg rounded-md mx-auto">
+      
+      <!-- Check if errorMessage exists -->
+      <ng-container *ngIf="errorMessage; else userDetails">
+        <p class="text-red-500">{{ errorMessage }}</p>
+      </ng-container>
+
+      <!-- User Details -->
+      <ng-template #userDetails>
+        <ng-container *ngIf="user; else loading">
+        
+          <img src="user.jpg" alt="Profile" class="w-48 h-48 rounded-full mb-4"/>
+          <h2 class="text-2xl mb-1"><strong>{{ user.firstName }} {{ user.lastName }}</strong></h2>
+          <p class="mb-1">{{ '@' + user.username }}</p>
+          <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+          <p class="mb-1"><strong>Role:</strong> {{ user.role }}</p>
+          <p><strong>Date of Birth:</strong> {{ user.dob | date }}</p>
+        
+        </ng-container>
+      </ng-template>
+
+      <!-- Loading placeholder -->
+      <ng-template #loading>
+        <p>Loading user details...</p>
+      </ng-template>
+
+    </div>
+  </main>
+
+  <!-- Right Sidebar (Calendar) -->
+  <aside class="w-72 bg-white p-6 hidden lg:block">
+    <h2 class="text-lg font-semibold mb-6">Calendar</h2>
+    <ul class="space-y-4 text-gray-700">
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">10:00</span>
+        <span>Dribbble shot Facebook Brand</span>
+      </li>
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">13:20</span>
+        <span>Design Task Management</span>
+      </li>
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">15:00</span>
+        <span>Mobile App Research</span>
+      </li>
+      <li>
+        <span class="block text-sm text-gray-500 font-bold">10:00</span>
+        <span>UX Research Sleep App</span>
+      </li>
+    </ul>
+  </aside>
+</div>

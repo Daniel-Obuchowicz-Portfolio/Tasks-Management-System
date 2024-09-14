@@ -1,0 +1,27 @@
+<aside class="w-64 bg-white shadow-lg p-6 min-h-screen h-full bg-gray-100 font-sans">
+    <div class="flex flex-col items-center">
+      <img src="user.jpg" alt="Profile" class="w-24 h-24 rounded-full mb-4">
+      <h2 class="text-xl font-semibold">{{ username }}</h2>
+      <p class="text-sm text-gray-600">sarahcgmail.com</p>
+    </div>
+    <nav class="mt-10 space-y-6">
+      <a routerLink="/dashboard" class="flex items-center space-x-4 text-gray-700 hover:text-blue-500 transition">
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/users" class="flex items-center space-x-4 text-gray-700 hover:text-blue-500 transition">
+        <i class="fas fa-chart-pie"></i>
+        <span>Users</span>
+      </a>
+      <a routerLink="/tasks" class="flex items-center space-x-4 text-gray-700 hover:text-blue-500 transition">
+        <i class="fas fa-chart-pie"></i>
+        <span>Tasks</span>
+      </a>
+      
+      <button class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600" (click)="onLogout()">
+        Logout
+      </button>
+    </nav>
+      
+  </aside>
+

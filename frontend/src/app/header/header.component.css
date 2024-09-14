@@ -1,0 +1,22 @@
+/* Montserrat font for modern typography */
+header {
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav a {
+    color: #4a5568; /* Gray for links */
+  }
+  
+  nav a:hover {
+    color: #2563eb; /* Primary blue on hover */
+  }
+  
+  .group-hover\:opacity-100 {
+    opacity: 1 !important;
+  }
+  
+  .group-hover\:scale-100 {
+    transform: scale(1) !important;
+  }
+  

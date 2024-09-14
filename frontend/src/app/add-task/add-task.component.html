@@ -1,0 +1,122 @@
+<div class="min-h-screen flex font-sans">
+
+    <!-- Sidebar and Header -->
+    <app-header [title]="'Add New Task'" [username]="username" class="min-h-screen bg-white shadow-lg"></app-header>
+  
+    <!-- Main Content -->
+    <main class="flex-1 p-8 bg-custom-bg rounded-custom">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-3xl font-semibold">Add New Task</h1>
+          <p class="text-gray-600">Today is Monday, 20 October 2021</p>
+        </div>
+        <button [routerLink]="['/users']" class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600">
+          Powrót
+        </button>      
+      </div>
+      <div class="w-full bg-white p-8 shadow-lg rounded-md mx-auto">
+    
+
+        <!-- Add User Form -->
+        <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto">
+            <div *ngIf="errorMessage" class="bg-red-100 block border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                <strong class="font-bold block">Error!</strong>
+                <span class="block sm:inline">{{ errorMessage }}</span>
+            </div>
+
+            <!-- Success message -->
+            <div *ngIf="successMessage" class="bg-green-100 block border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                <strong class="font-bold block">Success!</strong>
+                <span class="block sm:inline">{{ successMessage }}</span>
+            </div>
+            <div class="mb-4">
+              <label for="title" class="block font-semibold">Title</label>
+              <input id="title" formControlName="title" type="text" class="w-full p-2 border rounded" />
+              <div *ngIf="addTaskForm.get('title')?.invalid && addTaskForm.get('title')?.touched" class="text-red-500">
+                Title is required.
+              </div>
+            </div>
+          
+            <div class="mb-4">
+              <label for="description" class="block font-semibold">Description</label>
+              <textarea id="description" formControlName="description" class="w-full p-2 border rounded"></textarea>
+              <div *ngIf="addTaskForm.get('description')?.invalid && addTaskForm.get('description')?.touched" class="text-red-500">
+                Description is required.
+              </div>
+            </div>
+          
+            <div class="mb-4">
+              <label for="assignedUsers" class="block font-semibold">Assign Users</label>
+              <select id="assignedUsers" formControlName="assignedUsers" multiple class="w-full p-2 border rounded">
+                <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
+              </select>
+              <div *ngIf="addTaskForm.get('assignedUsers')?.invalid && addTaskForm.get('assignedUsers')?.touched" class="text-red-500">
+                At least one user must be assigned.
+              </div>
+            </div>
+          
+            <div class="mb-4">
+              <label for="priority" class="block font-semibold">Priority</label>
+              <select id="priority" formControlName="priority" class="w-full p-2 border rounded">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+              <div *ngIf="addTaskForm.get('priority')?.invalid && addTaskForm.get('priority')?.touched" class="text-red-500">
+                Priority is required.
+              </div>
+            </div>
+          
+            <div class="mb-4">
+              <label for="status" class="block font-semibold">Status</label>
+              <select id="status" formControlName="status" class="w-full p-2 border rounded">
+                <option value="open">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+              <div *ngIf="addTaskForm.get('status')?.invalid && addTaskForm.get('status')?.touched" class="text-red-500">
+                Status is required.
+              </div>
+            </div>
+          
+            <div class="mb-4">
+              <label for="dueDate" class="block font-semibold">Due Date</label>
+              <input id="dueDate" formControlName="dueDate" type="date" class="w-full p-2 border rounded" />
+              <div *ngIf="addTaskForm.get('dueDate')?.invalid && addTaskForm.get('dueDate')?.touched" class="text-red-500">
+                Due Date is required.
+              </div>
+            </div>
+          
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded" [disabled]="isLoading">
+              {{ isLoading ? 'Adding Task...' : 'Add Task' }}
+            </button>
+          </form>
+  
+      </div>
+    </main>
+  
+    <!-- Right Sidebar (Calendar) -->
+    <aside class="w-72 bg-white p-6 hidden lg:block">
+      <h2 class="text-lg font-semibold mb-6">Calendar</h2>
+      <ul class="space-y-4 text-gray-700">
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">10:00</span>
+          <span>Dribbble shot Facebook Brand</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">13:20</span>
+          <span>Design Task Management</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">15:00</span>
+          <span>Mobile App Research</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">10:00</span>
+          <span>UX Research Sleep App</span>
+        </li>
+      </ul>
+    </aside>
+  </div>
+  
+  

@@ -1,0 +1,105 @@
+<div class="flex h-screen justify-center items-center">
+    <div class="register-form max-w-md w-full bg-white p-8 shadow-md rounded-md">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Register</h2>
+
+        <!-- Form group wrapper -->
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+            <!-- First Name Field -->
+            <div class="mb-4">
+                <input formControlName="firstName"
+                    [ngClass]="{'border-red-500': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="First Name" />
+                <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+                    class="text-red-500">
+                    First name is required and must be at least 2 characters.
+                </div>
+            </div>
+
+            <!-- Last Name Field -->
+            <div class="mb-4">
+                <input formControlName="lastName"
+                    [ngClass]="{'border-red-500': registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched}"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Last Name" />
+                <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+                    class="text-red-500">
+                    Last name is required and must be at least 2 characters.
+                </div>
+            </div>
+
+            <!-- Email Field -->
+            <div class="mb-4">
+                <input formControlName="email" type="email"
+                    [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Email" />
+                <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                    class="text-red-500">
+                    Valid email is required.
+                </div>
+            </div>
+
+            <!-- Date of Birth Field -->
+            <div class="mb-4">
+                <input formControlName="dob" type="date"
+                    [ngClass]="{'border-red-500': registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched}"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Date of Birth" />
+                <div *ngIf="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched" class="text-red-500">
+                    Date of birth is required.
+                </div>
+            </div>
+
+            <!-- Username Field -->
+            <div class="mb-4">
+                <input formControlName="username"
+                    [ngClass]="{'border-red-500': registerForm.get('username')?.invalid && registerForm.get('username')?.touched}"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Username" />
+                <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+                    class="text-red-500">
+                    Username is required and must be at least 3 characters.
+                </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-4">
+                <input formControlName="password" type="password"
+                    [ngClass]="{'border-red-500': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Password" />
+                <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                    class="text-red-500">
+                    Password must be at least 6 characters long.
+                </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="mb-6">
+                <input formControlName="confirmPassword" type="password"
+                    [ngClass]="{'border-red-500': registerForm.errors?.['passwordsMismatch'] && registerForm.get('confirmPassword')?.touched}"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Confirm Password" />
+                <div *ngIf="registerForm.errors?.['passwordsMismatch'] && registerForm.get('confirmPassword')?.touched"
+                    class="text-red-500">
+                    Passwords do not match.
+                </div>
+            </div>
+
+            <!-- Register Button -->
+            <button type="submit"
+                class="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition duration-300">
+                Register
+            </button>
+        </form>
+        <div class="mt-4 text-center">
+            <p>Already have an account? 
+              <a routerLink="/login" class="text-blue-500 hover:underline">
+                Login here
+              </a>
+            </p>
+          </div>
+    </div>
+</div>

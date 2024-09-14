@@ -1,0 +1,56 @@
+<div class="flex h-screen justify-center items-center">
+  <div class="max-w-md w-full bg-white p-8 shadow-md rounded-md">
+    <h2 class="text-2xl font-bold mb-6">Login</h2>
+
+    <!-- Show error message if login fails -->
+    <div *ngIf="errorMessage" class="bg-red-100 block border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+      <strong class="font-bold block">Error!</strong>
+      <span class="block sm:inline">{{ errorMessage }}</span>
+    </div>
+
+    <!-- Success message -->
+    <div *ngIf="successMessage" class="bg-green-100 block border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+        <strong class="font-bold block">Success!</strong>
+        <span class="block sm:inline">{{ successMessage }}</span>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <input
+          class="w-full px-4 py-2 border rounded-md"
+          type="text"
+          [(ngModel)]="username"
+          placeholder="Username"
+          name="username"
+          required
+        />
+      </div>
+      <div class="mb-6">
+        <input
+          class="w-full px-4 py-2 border rounded-md"
+          type="password"
+          [(ngModel)]="password"
+          placeholder="Password"
+          name="password"
+          required
+        />
+      </div>
+      <button
+        [disabled]="isLoading"  
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+      >
+        <!-- Show "Loading..." while waiting for a response -->
+        {{ isLoading ? 'Loading...' : 'Login' }}
+      </button>
+    </form>
+
+    <!-- Add link to navigate to register page -->
+    <div class="mt-4 text-center">
+      <p>Don't have an account? 
+        <a routerLink="/register" class="text-blue-500 hover:underline">
+          Register here
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

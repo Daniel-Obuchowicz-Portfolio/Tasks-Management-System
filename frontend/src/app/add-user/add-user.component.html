@@ -1,0 +1,139 @@
+<div class="min-h-screen flex font-sans">
+
+    <!-- Sidebar and Header -->
+    <app-header [title]="'User Details'" [username]="username" class="min-h-screen bg-white shadow-lg"></app-header>
+  
+    <!-- Main Content -->
+    <main class="flex-1 p-8 bg-custom-bg rounded-custom">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-3xl font-semibold">Add new user</h1>
+          <p class="text-gray-600">Today is Monday, 20 October 2021</p>
+        </div>
+        <button [routerLink]="['/users']" class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600">
+          Powrót
+        </button>      
+      </div>
+      <div class="w-full bg-white p-8 shadow-lg rounded-md mx-auto">
+        
+    
+
+        <!-- Add User Form -->
+        <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto">
+            <!-- Error message -->
+            <div *ngIf="errorMessage" class="bg-red-100 block border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                <strong class="font-bold block">Error!</strong>
+                <span class="block sm:inline">{{ errorMessage }}</span>
+            </div>
+
+            <!-- Success message -->
+            <div *ngIf="successMessage" class="bg-green-100 block border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                <strong class="font-bold block">Success!</strong>
+                <span class="block sm:inline">{{ successMessage }}</span>
+            </div>
+
+            <div class="mb-4">
+                <input formControlName="firstName" class="w-full p-3 border rounded" placeholder="First Name" />
+                <div *ngIf="addUserForm.get('firstName')?.invalid && addUserForm.get('firstName')?.touched"
+                    class="text-red-500">
+                    First Name is required and must be at least 2 characters.
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <input formControlName="lastName" class="w-full p-3 border rounded" placeholder="Last Name" />
+                <div *ngIf="addUserForm.get('lastName')?.invalid && addUserForm.get('lastName')?.touched"
+                    class="text-red-500">
+                    Last Name is required and must be at least 2 characters.
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <input formControlName="username" class="w-full p-3 border rounded" placeholder="Username" />
+                <div *ngIf="addUserForm.get('username')?.invalid && addUserForm.get('username')?.touched"
+                    class="text-red-500">
+                    Username is required and must be at least 3 characters.
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <input formControlName="email" class="w-full p-3 border rounded" placeholder="Email" type="email" />
+                <div *ngIf="addUserForm.get('email')?.invalid && addUserForm.get('email')?.touched"
+                    class="text-red-500">
+                    A valid email is required.
+                </div>
+            </div>
+
+            <!-- Date of Birth Field -->
+            <div class="mb-4">
+                <input formControlName="dob" class="w-full p-3 border rounded" placeholder="Date of Birth"
+                    type="date" />
+                <div *ngIf="addUserForm.get('dob')?.invalid && addUserForm.get('dob')?.touched"
+                    class="text-red-500">
+                    Date of Birth is required.
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <select formControlName="role" id="role"
+                    class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+                <div *ngIf="addUserForm.get('role')?.invalid && addUserForm.get('role')?.touched" class="text-red-500">
+                    Role is required.
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <input formControlName="password" class="w-full p-3 border rounded" placeholder="Password"
+                    type="password" />
+                <div *ngIf="addUserForm.get('password')?.invalid && addUserForm.get('password')?.touched"
+                    class="text-red-500">
+                    Password is required and must be at least 6 characters.
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <input formControlName="confirmPassword" class="w-full p-3 border rounded"
+                    placeholder="Confirm Password" type="password" />
+                <div *ngIf="addUserForm.errors?.['passwordsMismatch'] && addUserForm.get('confirmPassword')?.touched"
+                    class="text-red-500">
+                    Passwords do not match.
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600"
+                [disabled]="isLoading">
+                {{ isLoading ? 'Adding...' : 'Add User' }}
+            </button>
+        </form>
+  
+      </div>
+    </main>
+  
+    <!-- Right Sidebar (Calendar) -->
+    <aside class="w-72 bg-white p-6 hidden lg:block">
+      <h2 class="text-lg font-semibold mb-6">Calendar</h2>
+      <ul class="space-y-4 text-gray-700">
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">10:00</span>
+          <span>Dribbble shot Facebook Brand</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">13:20</span>
+          <span>Design Task Management</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">15:00</span>
+          <span>Mobile App Research</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">10:00</span>
+          <span>UX Research Sleep App</span>
+        </li>
+      </ul>
+    </aside>
+  </div>
+  
