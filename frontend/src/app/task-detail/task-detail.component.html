@@ -1,0 +1,112 @@
+<div class="min-h-screen flex font-sans">
+    <!-- Header -->
+    <app-header [title]="'Task Details'" [username]="'Admin'" class="min-h-screen bg-white shadow-lg"></app-header>
+  
+    <!-- Main Content -->
+    <main class="flex-1 p-8 bg-custom-bg rounded-custom">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-semibold">Task Details</h1>
+        <button [routerLink]="['/tasks']" class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600">
+          Back to Tasks
+        </button>
+      </div>
+  
+      <div class="w-full bg-white p-8 shadow-lg rounded-md mx-auto">
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
+  
+        <!-- Task Details -->
+        <div *ngIf="task">
+          <!-- Task Title -->
+          <div class="mb-4">
+            <label class="block font-semibold">Title:</label>
+            <p>{{ task.title }}</p>
+          </div>
+  
+          <!-- Task Description -->
+          <div class="mb-4">
+            <label class="block font-semibold">Description:</label>
+            <p>{{ task.description }}</p>
+          </div>
+  
+          <!-- Task Status -->
+          <div class="mb-4">
+            <label class="block font-semibold">Status:</label>
+            <span class="inline-block px-2 py-1 text-xs font-semibold text-white rounded-full"
+                  [ngClass]="{
+                    'bg-green-500': task.status === 'completed',
+                    'bg-yellow-500': task.status === 'in Progress',
+                    'bg-red-500': task.status === 'pending'
+                  }">
+              {{ task.status }}
+            </span>
+          </div>
+  
+          <!-- Task Priority -->
+          <div class="mb-4">
+            <label class="block font-semibold">Priority:</label>
+            <span class="inline-block px-2 py-1 text-xs font-semibold text-white rounded-full"
+                  [ngClass]="{
+                    'bg-red-500': task.priority === 'high',
+                    'bg-yellow-500': task.priority === 'medium',
+                    'bg-green-500': task.priority === 'low'
+                  }">
+              {{ task.priority }}
+            </span>
+          </div>
+  
+          <!-- Assigned Users -->
+          <div class="mb-4">
+            <label class="block font-semibold">Assigned Users:</label>
+            <ul class="flex flex-wrap gap-2">
+              <li *ngFor="let user of task.assignedUsernames" class="bg-blue-100 text-blue-700 py-1 px-3 rounded-lg font-medium">
+                {{ user }}
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Due Date -->
+          <div class="mb-4">
+            <label class="block font-semibold">Due Date:</label>
+            <p>{{ task.dueDate | date:'longDate' }}</p>
+          </div>
+  
+          <!-- Created At -->
+          <div class="mb-4">
+            <label class="block font-semibold">Created At:</label>
+            <p>{{ task.createdAt | date:'longDate' }}</p>
+          </div>
+  
+          <!-- Updated At -->
+          <div class="mb-4">
+            <label class="block font-semibold">Updated At:</label>
+            <p>{{ task.updatedAt | date:'longDate' }}</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  
+    <!-- Right Sidebar (Calendar or Additional Info) -->
+    <aside class="w-72 bg-white p-6 hidden lg:block">
+      <h2 class="text-lg font-semibold mb-6">Calendar</h2>
+      <ul class="space-y-4 text-gray-700">
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">10:00</span>
+          <span>Dribbble shot Facebook Brand</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">13:20</span>
+          <span>Design Task Management</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">15:00</span>
+          <span>Mobile App Research</span>
+        </li>
+        <li>
+          <span class="block text-sm text-gray-500 font-bold">17:00</span>
+          <span>UX Research Sleep App</span>
+        </li>
+      </ul>
+    </aside>
+  </div>
+  

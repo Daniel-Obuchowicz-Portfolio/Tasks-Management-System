@@ -24,12 +24,15 @@
                 <p>Status: {{ task.status }}</p>
         
                 <div class="mt-4 flex gap-2">
+                  <button [routerLink]="['/task', task.id]" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">
+                    View
+                  </button>
                   <button [routerLink]="['/edit/task', task.id]"
-                          class="bg-yellow-500 text-white py-2 px-4 rounded">
+                          class="bg-yellow-500 text-white py-2 px-4 rounded-full">
                           Edit
                   </button>
 
-                  <button (click)="deleteTask(task.id)" class="bg-red-500 text-white py-2 px-4 rounded">
+                  <button (click)="deleteTask(task.id)" class="bg-red-500 text-white py-2 px-4 rounded-full">
                     Delete
                   </button>
                 </div>

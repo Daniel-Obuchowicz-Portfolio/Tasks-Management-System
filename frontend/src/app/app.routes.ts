@@ -9,6 +9,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { EditTaskComponent } from './edit-task/edit-task.component';
+import { TaskDetailComponent } from './task-detail/task-detail.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 
 export const appRoutes: Routes = [
@@ -22,6 +24,8 @@ export const appRoutes: Routes = [
   { path: 'tasks', component: TaskListComponent },
   { path: 'add/task', component: AddTaskComponent },
   { path: 'edit/task/:id', component: EditTaskComponent },
+  { path: 'task/:id', component: TaskDetailComponent },
+  { path: 'calendar', component: CalendarComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },  // Redirect to login if no path
   { path: '**', redirectTo: '/login' }  // Wildcard route for invalid URLs
 ];
