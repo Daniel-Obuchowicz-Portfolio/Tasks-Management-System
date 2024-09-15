@@ -1,0 +1,50 @@
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
+    <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
+      <h2 class="text-lg font-semibold mb-4">Edit Event</h2>
+      <form (ngSubmit)="submitForm()">
+        <div class="mb-4">
+          <label for="title" class="block text-gray-700">Title</label>
+          <input type="text" id="title" [(ngModel)]="event.title" name="title" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+          <label for="date" class="block text-gray-700">Date</label>
+          <input type="datetime-local" id="date" [(ngModel)]="event.date" name="date" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+          <label for="description" class="block text-gray-700">Description</label>
+          <textarea id="description" [(ngModel)]="event.description" name="description" class="w-full p-2 border rounded"></textarea>
+        </div>
+  
+        <!-- User Selection Section -->
+        <div class="mb-4">
+          <label for="assignedUsers" class="block font-semibold">Assign Users</label>
+          <input type="text" id="assignedUsersSearch" placeholder="Search for users..." (input)="searchUsers($event)"
+            class="w-full p-2 border rounded" />
+  
+          <!-- Display search results -->
+          <ul *ngIf="searchResults.length > 0" class="mt-2 border p-2">
+            <li *ngFor="let user of searchResults" (click)="selectUser(user)" class="cursor-pointer hover:bg-gray-200">
+              {{ user.username }}
+            </li>
+          </ul>
+  
+          <!-- Display selected users -->
+          <div class="mt-4">
+            <label class="block font-semibold">Assigned Users:</label>
+            <ul>
+              <li *ngFor="let user of selectedUsers">
+                {{ user.username }} (ID: {{ user.id }})
+                <button type="button" (click)="removeUser(user.id)" class="text-red-500 hover:underline">Remove</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+  
+        <div class="mt-4 flex justify-between">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
+          <button type="button" (click)="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

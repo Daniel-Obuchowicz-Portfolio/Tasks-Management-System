@@ -10,6 +10,7 @@ import { TaskListComponent } from './task-list/task-list.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { EditTaskComponent } from './edit-task/edit-task.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
+import { AddCalendarComponent } from './add-calendar/add-calendar.component';
 import { CalendarComponent } from './calendar/calendar.component';
 
 
@@ -25,7 +26,8 @@ export const appRoutes: Routes = [
   { path: 'add/task', component: AddTaskComponent },
   { path: 'edit/task/:id', component: EditTaskComponent },
   { path: 'task/:id', component: TaskDetailComponent },
+  { path: 'add/calendar', component: AddCalendarComponent },
   { path: 'calendar', component: CalendarComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },  // Redirect to login if no path
-  { path: '**', redirectTo: '/login' }  // Wildcard route for invalid URLs
+  { path: '**', redirectTo: '/dashboard' }  // Wildcard route for invalid URLs
 ];

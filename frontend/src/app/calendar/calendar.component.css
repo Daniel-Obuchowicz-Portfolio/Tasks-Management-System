@@ -1,0 +1,47 @@
+/* FullCalendar custom styles */
+.fc-toolbar {
+    background-color: #f3f4f6; /* Light grey background for toolbar */
+    padding: 10px;
+  }
+  
+  .fc-button {
+    background-color: #2563eb !important; /* TailwindCSS blue */
+    border: none;
+    color: white !important;
+    font-weight: 600;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    transition: background-color 0.3s;
+  }
+  
+  .fc-button:hover {
+    background-color: #1d4ed8 !important; /* Darker blue on hover */
+  }
+  
+  .fc-daygrid-event {
+    background-color: #10b981 !important; /* TailwindCSS green */
+    color: white !important;
+    padding: 3px;
+    border-radius: 5px;
+    border: none;
+  }
+  
+  .fc-daygrid-event:hover {
+    background-color: #059669 !important; /* Darker green on hover */
+  }
+  
+  .fc-daygrid-block-event {
+    margin-bottom: 5px;
+  }
+  
+  .fc .fc-col-header-cell-cushion {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #374151; /* TailwindCSS gray */
+  }
+  
+  .fc-event-title {
+    font-size: 0.875rem; /* TailwindCSS text-sm */
+    font-weight: 600;
+  }
+  
