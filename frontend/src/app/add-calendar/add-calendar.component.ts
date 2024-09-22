@@ -1,25 +1,10 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpClientModule
-} from '@angular/common/http'; // Import HttpClient
-import {
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms'; // Import FormsModule and ReactiveFormsModule
-import {
-  CommonModule
-} from '@angular/common'; // CommonModule for common Angular features
-import {
-  RouterModule
-} from '@angular/router';
-import {
-  HeaderComponent
-} from '../header/header.component'; // Import shared HeaderComponent
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http'; // Import HttpClient
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import FormsModule and ReactiveFormsModule
+import { CommonModule } from '@angular/common'; // CommonModule for common Angular features
+import { RouterModule, Router } from '@angular/router';  // Import Router for navigation
+import { HeaderComponent } from '../header/header.component'; // Import shared HeaderComponent
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 interface Event {
   id: number;
@@ -36,7 +21,7 @@ interface User {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, HttpClientModule, HeaderComponent], // Ensure FormsModule is imported here
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, HttpClientModule, CalendarWidgetComponent, HeaderComponent], // Ensure FormsModule is imported here
   templateUrl: './add-calendar.component.html',
   styleUrls: ['./add-calendar.component.css']
 })
@@ -54,7 +39,7 @@ export class AddCalendarComponent implements OnInit {
   searchResults: User[] = []; // Stores the search results
   selectedUsers: User[] = []; // Stores selected users
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}  // Inject Router for navigation
 
   ngOnInit(): void {
     this.getEvents();
@@ -73,13 +58,10 @@ export class AddCalendarComponent implements OnInit {
     });
   }
 
-
   // Fetch all events from the API
   getEvents() {
     const headers = this.getHeaders();
-    this.http.get < any > ('/api/events', {
-      headers
-    }).subscribe(
+    this.http.get<any>('/api/events', { headers }).subscribe(
       (data) => {
         console.log('Fetched events:', data); // Log fetched events to check the structure
         this.events = data.events || []; // Ensure we get the array from the events field in the response
@@ -105,9 +87,7 @@ export class AddCalendarComponent implements OnInit {
     // Log the userIds array to check if it's correctly formatted
     console.log(this.newEvent.userIds);
 
-    this.http.post < Event > ('/api/events', this.newEvent, {
-      headers
-    }).subscribe(
+    this.http.post<Event>('/api/events', this.newEvent, { headers }).subscribe(
       (event) => {
         this.events.push(event); // Add new event to the events list
         this.newEvent = {
@@ -118,6 +98,9 @@ export class AddCalendarComponent implements OnInit {
           userIds: []
         }; // Reset form
         this.selectedUsers = []; // Reset selected users
+
+        // Navigate to the calendar page after successful submission
+        this.router.navigate(['/calendar']);  // Redirect to the calendar page
       },
       (error) => {
         console.error('Error adding event:', error);
@@ -125,9 +108,37 @@ export class AddCalendarComponent implements OnInit {
     );
   }
 
+  // Update the existing event
+  updateEvent() {
+    if (!this.editingEvent) {
+      console.error('No event selected for editing');
+      return;
+    }
 
+    const headers = this.getHeaders();
+    if (!this.editingEvent.title || !this.editingEvent.date || this.selectedUsers.length === 0) {
+      console.warn('Event title, date, and assigned users are required');
+      return; // Validate that title, date, and selected users are provided
+    }
 
-  // Search for users (called on input change)
+    // Update the userIds with selected users
+    this.editingEvent.userIds = this.selectedUsers.map(user => user.id.toString());
+
+    this.http.put(`/api/events/${this.editingEvent.id}`, this.editingEvent, { headers }).subscribe(
+      () => {
+        this.getEvents(); // Refresh the events list after update
+        this.editingEvent = null; // Clear the editing form
+        this.selectedUsers = []; // Clear selected users
+
+        // Navigate to the calendar page after updating the event
+        this.router.navigate(['/calendar']);  // Redirect to the calendar page
+      },
+      (error) => {
+        console.error('Error updating event:', error);
+      }
+    );
+  }
+
   // Search for users (called on input change)
   searchUsers(event: any) { // Use `any` for the event type to avoid the error
     const inputElement = event.target as HTMLInputElement;
@@ -148,9 +159,7 @@ export class AddCalendarComponent implements OnInit {
       'Authorization': `Bearer ${token}`,
     });
 
-    this.http.get < any[] > (`/api/users/search?q=${encodeURIComponent(query)}`, {
-        headers
-      })
+    this.http.get<any[]>(`/api/users/search?q=${encodeURIComponent(query)}`, { headers })
       .subscribe(
         (results) => {
           this.searchResults = results;
@@ -160,7 +169,6 @@ export class AddCalendarComponent implements OnInit {
         }
       );
   }
-
 
   // Select a user from search results
   selectUser(user: User) {
@@ -177,9 +185,7 @@ export class AddCalendarComponent implements OnInit {
 
   // Set the event for editing
   editEvent(event: Event) {
-    this.editingEvent = {
-      ...event
-    }; // Clone the event to avoid direct mutation
+    this.editingEvent = { ...event }; // Clone the event to avoid direct mutation
     // Populate the selectedUsers array based on userIds
     this.selectedUsers = event.userIds.map(id => ({
       id: Number(id),
@@ -187,43 +193,11 @@ export class AddCalendarComponent implements OnInit {
     })); // You should map it with actual user data
   }
 
-  // Update the existing event
-  updateEvent() {
-    if (!this.editingEvent) {
-      console.error('No event selected for editing');
-      return;
-    }
-
-    const headers = this.getHeaders();
-    if (!this.editingEvent.title || !this.editingEvent.date || this.selectedUsers.length === 0) {
-      console.warn('Event title, date, and assigned users are required');
-      return; // Validate that title, date, and selected users are provided
-    }
-
-    // Update the userIds with selected users
-    this.editingEvent.userIds = this.selectedUsers.map(user => user.id.toString());
-
-    this.http.put(`/api/events/${this.editingEvent.id}`, this.editingEvent, {
-      headers
-    }).subscribe(
-      () => {
-        this.getEvents(); // Refresh the events list after update
-        this.editingEvent = null; // Clear the editing form
-        this.selectedUsers = []; // Clear selected users
-      },
-      (error) => {
-        console.error('Error updating event:', error);
-      }
-    );
-  }
-
   // Delete an event by its ID
   deleteEvent(id: number) {
     const headers = this.getHeaders();
 
-    this.http.delete(`/api/events/${id}`, {
-      headers
-    }).subscribe(
+    this.http.delete(`/api/events/${id}`, { headers }).subscribe(
       () => {
         this.events = this.events.filter(event => event.id !== id); // Remove deleted event from list
       },

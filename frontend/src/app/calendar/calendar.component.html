@@ -5,19 +5,58 @@
 
   <!-- Main Content -->
   <main class="flex-1 p-8 bg-custom-bg rounded-custom">
-    <div class="w-full bg-white p-8 shadow-lg rounded-md mx-auto">
-      <full-calendar [options]="calendarOptions"></full-calendar>
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-semibold">Tasks</h1>
+        <p class="text-gray-600">Total tasks: 8</p>
+      </div>
+      <button [routerLink]="['/add/calendar']" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">
+        Add New Event
+      </button>
     </div>
 
-    <!-- Event Action Modal -->
-    <div *ngIf="isEventActionModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[99]">
-      <div class="bg-white p-6 rounded shadow-lg max-w-md w-full">
-        <h2 class="text-lg font-semibold mb-4">Event Actions</h2>
-        <div class="mt-4 flex flex-col space-y-3">
-          <button (click)="viewEvent()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View</button>
-          <button (click)="editEvent()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Edit</button>
-          <button (click)="openDeleteModal()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
-          <button (click)="closeEventActionModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-400">Cancel</button>
+    <div class="w-full bg-white p-8 shadow-lg rounded-md mx-auto">
+      <div class="flex justify-between gap-[1%]">
+        <div class="w-full xl:max-w-[80%]">
+          <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+
+        <!-- Details Section -->
+        <div class="details w-full xl:max-w-[25%] bg-gray-200 p-8 rounded shadow-lg">
+          <div *ngIf="eventToEditOrView; else noEventSelected">
+            <h1 class="text-2xl font-semibold mb-4">{{ eventToEditOrView?.title }}</h1>
+            <p><strong>Date:</strong> {{ eventToEditOrView.date | date: 'yyyy-MM-dd HH:mm' }}</p>
+            <p><strong>Description:</strong> {{ eventToEditOrView?.description }}</p>
+
+            <!-- Display Assigned Users -->
+            <div *ngIf="assignedUsers.length > 0">
+              <p><strong>Assigned Users:</strong></p>
+              <ul>
+                <li *ngFor="let user of assignedUsers">{{ user.username }} (ID: {{ user.id }})</li>
+              </ul>
+            </div>
+            <div *ngIf="assignedUsers.length === 0">
+              <p>No users assigned.</p>
+            </div>
+
+            <!-- Buttons for Event Actions -->
+            <div class="mt-4 flex flex-col space-y-2">
+              <button (click)="editEvent()"
+                class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition">
+                Edit Event
+              </button>
+              <button (click)="openDeleteModal()"
+                class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition">
+                Delete Event
+              </button>
+            </div>
+          </div>
+
+          <!-- Placeholder when no event is selected -->
+          <ng-template #noEventSelected>
+            <h1 class="text-2xl font-semibold mb-4">Details</h1>
+            <p class="text-gray-600">Select an event to view the details</p>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -41,25 +80,6 @@
   </main>
 
   <!-- Right Sidebar (Calendar) -->
-  <aside class="w-72 bg-white p-6 hidden lg:block">
-    <h2 class="text-lg font-semibold mb-6">Calendar</h2>
-    <ul class="space-y-4 text-gray-700">
-      <li>
-        <span class="block text-sm text-gray-500 font-bold">10:00</span>
-        <span>Dribbble shot Facebook Brand</span>
-      </li>
-      <li>
-        <span class="block text-sm text-gray-500 font-bold">13:20</span>
-        <span>Design Task Management</span>
-      </li>
-      <li>
-        <span class="block text-sm text-gray-500 font-bold">15:00</span>
-        <span>Mobile App Research</span>
-      </li>
-      <li>
-        <span class="block text-sm text-gray-500 font-bold">10:00</span>
-        <span>UX Research Sleep App</span>
-      </li>
-    </ul>
-  </aside>
+  <app-calendar-widget></app-calendar-widget>
+
 </div>

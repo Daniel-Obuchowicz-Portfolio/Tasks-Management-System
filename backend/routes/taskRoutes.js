@@ -17,7 +17,8 @@ router.put('/:id', authenticateToken, taskController.updateTask);
 // Delete task by ID
 router.delete('/:id', authenticateToken, taskController.deleteTask);
 
-router.get('/:id', taskController.getTaskById);
+router.get('/:id',authenticateToken, taskController.getTaskById);
+router.get('/get/today', authenticateToken, taskController.getTodayEvents);
 
 
 module.exports = router;

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,
-  imports: [HeaderComponent],  // Import the shared HeaderComponent
+  imports: [HeaderComponent, CalendarWidgetComponent],  // Import the shared HeaderComponent
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })

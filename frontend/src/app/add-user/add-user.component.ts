@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common'; // For *ngIf, *ngFor directives
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
 import { RouterModule } from '@angular/router';
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,  // Standalone component
-  imports: [HttpClientModule, CommonModule, ReactiveFormsModule, HeaderComponent, RouterModule],  // Ensure HttpClientModule is provided here
+  imports: [HttpClientModule, CommonModule, ReactiveFormsModule, HeaderComponent, CalendarWidgetComponent, RouterModule],  // Ensure HttpClientModule is provided here
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
 })

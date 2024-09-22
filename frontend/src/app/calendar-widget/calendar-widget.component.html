@@ -1,0 +1,12 @@
+  <aside class="w-72 bg-white p-6 hidden lg:block">
+    <h2 class="text-lg font-semibold mb-6">Calendar</h2>
+    <ul class="space-y-4 text-gray-700" *ngIf="events.length > 0">
+        <li *ngFor="let event of events">
+          <span class="block text-sm text-gray-500 font-bold">{{ event.date | date: 'shortTime' }}</span>
+          <span>{{ event.title }}</span>
+        </li>
+      </ul>
+      <p *ngIf="!isLoading && events.length === 0" class="text-gray-500">
+        No events for today.
+      </p>
+  </aside>

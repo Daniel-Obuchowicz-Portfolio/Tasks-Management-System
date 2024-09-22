@@ -3,13 +3,14 @@ import { ActivatedRoute, RouterModule } from '@angular/router'; // ActivatedRout
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'; // Import HttpClientModule
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,
   selector: 'app-task-detail',
   templateUrl: './task-detail.component.html',
   styleUrls: ['./task-detail.component.css'],
-  imports: [CommonModule, HeaderComponent, RouterModule, HttpClientModule] // Add HttpClientModule here
+  imports: [CommonModule, HeaderComponent, RouterModule, HttpClientModule, CalendarWidgetComponent] // Add HttpClientModule here
 })
 export class TaskDetailComponent implements OnInit {
   task: any = null;

@@ -4,10 +4,11 @@ import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http'
 import { RouterModule, ActivatedRoute } from '@angular/router'; // ActivatedRoute to get task ID
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule, HeaderComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule, HeaderComponent, CalendarWidgetComponent],
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.css']
 })

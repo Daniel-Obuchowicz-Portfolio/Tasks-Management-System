@@ -1,6 +1,14 @@
 // controllers/taskController.js
-
+const express = require('express');
 const db = require('../config/db'); // Make sure you have your database connection in this file
+
+const getTodayDate = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
 
 // Create a new task
 exports.createTask = (req, res) => {
@@ -193,3 +201,38 @@ exports.getTaskById = (req, res) => {
     res.status(200).json(task);
   });
 };
+
+exports.getTodayEvents = (req, res) => {
+  const today = getTodayDate(); // Assuming this function is already defined and returns today's date in 'YYYY-MM-DD' format.
+  const userId = req.user.id; // Get the ID of the logged-in user from JWT token.
+
+  console.log(today);
+
+  // Corrected SQL query to get today's events based on user ID and date.
+  const query = `
+    SELECT id, title, description, date, createdAt 
+    FROM events 
+    WHERE date LIKE ? AND (userIds LIKE ? OR userIds IS NULL)
+  `;
+
+  // `%userId%` ensures we match the user ID within the string of `userIds`.
+  const userFilter = `%${userId}%`;
+
+  db.query(query, [`${today}%`, userFilter], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Error fetching today's events",
+        error: err
+      });
+    }
+
+    // If events are found, return them.
+    if (results.length > 0) {
+      return res.status(200).json(results);
+    }
+
+    // If no events are found, return an empty list.
+    res.status(200).json([]);
+  });
+};
+

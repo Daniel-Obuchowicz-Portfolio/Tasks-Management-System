@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';  // Dodaj CommonModule
 import { HeaderComponent } from '../header/header.component';
 import { RouterModule } from '@angular/router';
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, HttpClientModule, HeaderComponent, RouterModule],  // Dodaj HttpClientModule tutaj
+  imports: [ReactiveFormsModule, CommonModule, HttpClientModule, HeaderComponent, RouterModule, CalendarWidgetComponent],  // Dodaj HttpClientModule tutaj
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']

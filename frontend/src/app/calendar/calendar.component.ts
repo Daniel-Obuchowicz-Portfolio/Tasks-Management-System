@@ -9,6 +9,7 @@ import { HeaderComponent } from '../header/header.component';
 import { RouterModule } from '@angular/router';
 import { CalendarDetailComponent } from '../calendar-detail/calendar-detail.component';  
 import { EditCalendarComponent } from '../edit-calendar/edit-calendar.component';  
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,
@@ -21,6 +22,7 @@ import { EditCalendarComponent } from '../edit-calendar/edit-calendar.component'
     HeaderComponent,
     RouterModule,
     CalendarDetailComponent,
+    CalendarWidgetComponent,
     EditCalendarComponent
   ],
   templateUrl: './calendar.component.html',
@@ -31,7 +33,7 @@ export class CalendarComponent implements OnInit {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
     events: [],
-    eventClick: this.handleEventClick.bind(this)
+    eventClick: this.viewEvent.bind(this)
   };
 
   username: string | null = 'Admin';
@@ -41,6 +43,7 @@ export class CalendarComponent implements OnInit {
   isEditModalOpen = false;
   eventToEditOrView: any = null;
   eventIdToDelete: number | null = null;
+  assignedUsers: any[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -48,6 +51,7 @@ export class CalendarComponent implements OnInit {
     this.loadEvents();
   }
 
+  // Load all events
   loadEvents() {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -61,7 +65,8 @@ export class CalendarComponent implements OnInit {
             start: event.date,
             description: event.description,
             extendedProps: {
-              id: event.id
+              id: event.id,
+              userIds: event.userIds
             }
           }));
         } else {
@@ -90,21 +95,35 @@ export class CalendarComponent implements OnInit {
     );
   }
 
-  // Handle event click to open the Event Action Modal
-  handleEventClick(arg: any) {
-    this.eventToEditOrView = arg.event.extendedProps;  // Store the clicked event ID
-    this.isEventActionModalOpen = true;  // Open the event action modal
+  // Fetch users assigned to an event
+  fetchAssignedUsers(userIds: string) {
+    if (!userIds || userIds === 'null') {
+      this.assignedUsers = [];
+      return;
+    }
+
+    const userIdsArray = userIds.split(',').map(id => id.trim());
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    this.http.post<any[]>('/api/users/byIds', { userIds: userIdsArray }, { headers }).subscribe(
+      (users) => {
+        this.assignedUsers = users;
+      },
+      (error) => {
+        console.error('Error fetching assigned users:', error);
+      }
+    );
   }
 
-  // Open View Modal (fetch event details first)
-  viewEvent() {
-    if (this.eventToEditOrView?.id) {
-      this.fetchEventById(this.eventToEditOrView.id, (eventData) => {
-        this.eventToEditOrView = eventData;  // Store full event details
-        this.isViewModalOpen = true;  // Open the view modal
-        this.isEventActionModalOpen = false;  // Close the event action modal
-      });
-    }
+  // Handle event click to open the Event Action Modal
+  viewEvent(arg: any) {
+    this.fetchEventById(arg.event.extendedProps.id, (eventData) => {
+      this.eventToEditOrView = eventData;
+      this.fetchAssignedUsers(eventData.userIds);  // Fetch assigned users for the event
+      // this.isViewModalOpen = true;  // Open the view modal
+    });
   }
 
   // Open Edit Modal (fetch event details first)
@@ -113,17 +132,19 @@ export class CalendarComponent implements OnInit {
       this.fetchEventById(this.eventToEditOrView.id, (eventData) => {
         this.eventToEditOrView = eventData;  // Store full event details
         this.isEditModalOpen = true;  // Open the edit modal
-        this.isEventActionModalOpen = false;  // Close the event action modal
+        this.isViewModalOpen = false;  // Close the view modal
       });
     }
   }
 
+  // Open Delete Modal
   openDeleteModal() {
     this.eventIdToDelete = this.eventToEditOrView.id;
-    this.isEventActionModalOpen = false;
     this.isDeleteModalOpen = true;
+    this.isViewModalOpen = false;
   }
 
+  // Confirm Deletion of Event
   confirmDelete() {
     if (this.eventIdToDelete !== null) {
       const headers = new HttpHeaders({
@@ -142,26 +163,25 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  closeEventActionModal() {
-    this.isEventActionModalOpen = false;
-    this.eventToEditOrView = null;
-  }
-
+  // Close View Modal
   closeViewModal() {
     this.isViewModalOpen = false;
   }
 
+  // Close Edit Modal
   closeEditModal() {
     this.isEditModalOpen = false;
   }
 
+  // Close Delete Confirmation Modal
   closeDeleteModal() {
     this.isDeleteModalOpen = false;
     this.eventIdToDelete = null;
   }
 
+  // Handle event update after editing
   handleEventUpdate(updatedEvent: any) {
-    this.loadEvents();
+    this.loadEvents();  // Reload the events to reflect the updated data
     this.closeEditModal();
   }
 }

@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUsers, updateUser, deleteUser, getUserById, registerUserByAdmin, searchUsers } = require('../controllers/userController');
+const { getUsers, updateUser, deleteUser, getUserById, registerUserByAdmin, searchUsers, getUsersByIds } = require('../controllers/userController');
 const authenticateToken = require('../middleware/authMiddleware');  // Import the authentication middleware
 const router = express.Router();
 
@@ -15,6 +15,8 @@ router.delete('/:id', authenticateToken, deleteUser);
 router.get('/by/:id', authenticateToken, getUserById);  // You can include middleware for authentication
 router.post('/create', authenticateToken, registerUserByAdmin);  // You can include middleware for authentication
 router.get('/search', authenticateToken, searchUsers);
+
+router.post('/byIds', authenticateToken, getUsersByIds);
 
 
 module.exports = router;

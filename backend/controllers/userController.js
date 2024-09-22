@@ -124,3 +124,29 @@ exports.searchUsers = (req, res) => {
     res.status(200).json(results);
   });
 };
+
+// Fetch user details by IDs
+exports.getUsersByIds = (req, res) => {
+  const { userIds } = req.body;
+
+  // Ensure userIds is an array and contains at least one ID
+  if (!Array.isArray(userIds) || userIds.length === 0) {
+    return res.status(400).json({ message: 'Invalid userIds' });
+  }
+
+  // SQL query to fetch user details for the given IDs
+  const query = `SELECT id, username FROM users WHERE id IN (?)`;
+
+  db.query(query, [userIds], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error fetching users', error: err });
+    }
+
+    // If no users are found
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'No users found for the provided IDs' });
+    }
+
+    res.status(200).json(results);
+  });
+};

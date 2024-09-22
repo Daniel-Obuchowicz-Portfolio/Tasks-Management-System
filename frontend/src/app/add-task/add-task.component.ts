@@ -4,10 +4,11 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule, HeaderComponent],  // Include HttpClientModule here
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule, CalendarWidgetComponent, HeaderComponent],  // Include HttpClientModule here
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.css']
 })

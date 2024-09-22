@@ -3,10 +3,11 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { CommonModule } from '@angular/common';  // Import CommonModule for ngClass, ngFor, ngIf
 import { RouterModule } from '@angular/router';  // Import RouterModule for routerLink
 import { HeaderComponent } from '../header/header.component';
+import { CalendarWidgetComponent } from '../calendar-widget/calendar-widget.component';
 
 @Component({
   standalone: true,
-  imports: [HttpClientModule, CommonModule, RouterModule, HeaderComponent],  // Add RouterModule and CommonModule
+  imports: [HttpClientModule, CommonModule, RouterModule, HeaderComponent, CalendarWidgetComponent],  // Add RouterModule and CommonModule
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })

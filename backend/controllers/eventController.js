@@ -105,3 +105,4 @@ exports.deleteEvent = (req, res) => {
     res.status(200).json({ message: 'Event deleted successfully' });
   });
 };
+
