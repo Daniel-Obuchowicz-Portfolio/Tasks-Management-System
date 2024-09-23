@@ -1,18 +1,27 @@
 const db = require('../config/db'); // Ensure you have your database connection
 
-// Create a new event with multiple users (comma-separated user IDs)
-exports.createEvent = (req, res) => {
+// Middleware to check if the user is an admin
+const isAdmin = (req, res, next) => {
+  const userRole = req.user.role; // Assuming `req.user` contains the logged-in user information
+
+  if (userRole !== 'admin') {
+    return res.status(403).json({ message: 'Access denied. Admins only.' });
+  }
+
+  next();
+};
+
+// Create a new event with multiple users (comma-separated user IDs) - Admin Only
+// Create an event (admin only)
+exports.createEvent = [isAdmin, (req, res) => {
   const { title, description, date, userIds } = req.body;  // userIds is an array
 
-  // Ensure all required fields are present
   if (!title || !date || !userIds || userIds.length === 0) {
     return res.status(400).json({ message: 'Title, date, and userIds are required' });
   }
 
-  // Convert userIds array to a comma-separated string
   const userIdsString = Array.isArray(userIds) ? userIds.join(',') : userIds;
 
-  // SQL query to insert the event
   const query = `
     INSERT INTO events (title, description, date, userIds)
     VALUES (?, ?, ?, ?)
@@ -27,15 +36,30 @@ exports.createEvent = (req, res) => {
       eventId: result.insertId
     });
   });
-};
+}];
 
-
-
-// Get all events with user IDs (comma-separated string)
+// Get all events (admin sees all, user sees only their assigned events)
 exports.getEvents = (req, res) => {
-  const query = 'SELECT id, title, description, date, userIds, createdAt FROM events';
+  const userId = req.user.id; // Get logged-in user's ID
+  const userRole = req.user.role; // Get logged-in user's role
 
-  db.query(query, (err, results) => {
+  let query;
+  let queryParams = [];
+
+  if (userRole === 'admin') {
+    // Admin can see all events
+    query = 'SELECT id, title, description, date, userIds, createdAt FROM events';
+  } else {
+    // Regular users can only see events they are assigned to
+    query = `
+      SELECT id, title, description, date, userIds, createdAt 
+      FROM events 
+      WHERE FIND_IN_SET(?, userIds)
+    `;
+    queryParams.push(userId);
+  }
+
+  db.query(query, queryParams, (err, results) => {
     if (err) {
       return res.status(500).json({ message: 'Error fetching events', error: err });
     }
@@ -44,13 +68,29 @@ exports.getEvents = (req, res) => {
   });
 };
 
-// Get a single event by ID (comma-separated user IDs)
+// Get a single event by ID (admin can access any event, user can only access events they're assigned to)
 exports.getEventById = (req, res) => {
   const { id } = req.params;
+  const userId = req.user.id;
+  const userRole = req.user.role;
 
-  const query = 'SELECT id, title, description, date, userIds, createdAt FROM events WHERE id = ?';
-  
-  db.query(query, [id], (err, results) => {
+  let query;
+  let queryParams = [id];
+
+  if (userRole === 'admin') {
+    // Admin can see any event
+    query = 'SELECT id, title, description, date, userIds, createdAt FROM events WHERE id = ?';
+  } else {
+    // Regular users can only see events they're assigned to
+    query = `
+      SELECT id, title, description, date, userIds, createdAt 
+      FROM events 
+      WHERE id = ? AND FIND_IN_SET(?, userIds)
+    `;
+    queryParams.push(userId);
+  }
+
+  db.query(query, queryParams, (err, results) => {
     if (err) {
       return res.status(500).json({ message: 'Error fetching event', error: err });
     }
@@ -63,10 +103,10 @@ exports.getEventById = (req, res) => {
   });
 };
 
-// Update an event with multiple user IDs (comma-separated string)
-exports.updateEvent = (req, res) => {
+// Update an event (admin only)
+exports.updateEvent = [isAdmin, (req, res) => {
   const { id } = req.params;
-  const { title, description, date, userIds } = req.body;  // userIds is a comma-separated string
+  const { title, description, date, userIds } = req.body;
 
   if (!title || !date || !userIds) {
     return res.status(400).json({ message: 'Title, date, and userIds are required' });
@@ -85,10 +125,10 @@ exports.updateEvent = (req, res) => {
 
     res.status(200).json({ message: 'Event updated successfully' });
   });
-};
+}];
 
-// Delete an event by ID
-exports.deleteEvent = (req, res) => {
+// Delete an event (admin only)
+exports.deleteEvent = [isAdmin, (req, res) => {
   const { id } = req.params;
 
   const query = 'DELETE FROM events WHERE id = ?';
@@ -104,5 +144,5 @@ exports.deleteEvent = (req, res) => {
 
     res.status(200).json({ message: 'Event deleted successfully' });
   });
-};
+}];
 

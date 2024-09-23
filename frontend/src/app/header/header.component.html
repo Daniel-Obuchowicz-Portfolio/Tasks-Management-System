@@ -1,31 +1,44 @@
-<aside class="w-64 bg-white shadow-lg p-6 min-h-screen h-full bg-gray-100 font-sans">
-    <div class="flex flex-col items-center">
-      <img src="user.jpg" alt="Profile" class="w-24 h-24 rounded-full mb-4">
-      <h2 class="text-xl font-semibold">{{ username }}</h2>
-      <p class="text-sm text-gray-600">sarahcgmail.com</p>
-    </div>
-    <nav class="mt-10 space-y-6">
-      <a routerLink="/dashboard" class="flex items-center space-x-4 text-gray-700 hover:text-blue-500 transition">
-        <i class="fas fa-home"></i>
-        <span>Dashboard</span>
-      </a>
-      <a routerLink="/users" class="flex items-center space-x-4 text-gray-700 hover:text-blue-500 transition">
-        <i class="fas fa-chart-pie"></i>
-        <span>Users</span>
-      </a>
-      <a routerLink="/tasks" class="flex items-center space-x-4 text-gray-700 hover:text-blue-500 transition">
-        <i class="fas fa-chart-pie"></i>
-        <span>Tasks</span>
-      </a>
-      <a routerLink="/calendar" class="flex items-center space-x-4 text-gray-700 hover:text-blue-500 transition">
-        <i class="fas fa-chart-pie"></i>
-        <span>Calendar</span>
-      </a>
-      
-      <button class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600" (click)="onLogout()">
-        Logout
-      </button>
-    </nav>
-      
-  </aside>
+<aside [ngClass]="{'bg-white': !isDarkMode, 'bg-gray-800 text-white': isDarkMode}" class="w-64 shadow-lg p-6 min-h-screen h-full font-sans">
+  <div class="flex flex-col items-center">
+    <img src="user.jpg" alt="Profile" class="w-24 h-24 rounded-full mb-4">
+    <h2 class="text-xl font-semibold">{{ username }}</h2>
+    <p class="text-sm" [ngClass]="{'text-gray-600': !isDarkMode, 'text-gray-300': isDarkMode}">{{ email }}</p>
+  </div>
 
+  <nav class="mt-10 space-y-6">
+    <a routerLink="/dashboard" class="flex items-center space-x-4 transition" [ngClass]="{'text-gray-700 hover:text-blue-500': !isDarkMode, 'text-gray-300 hover:text-blue-400': isDarkMode}">
+      <i class="fas fa-tachometer-alt"></i>
+      <span>{{ 'Dashboard' | translate }}</span>
+    </a>
+
+    <a routerLink="/users" class="flex items-center space-x-4 transition" [ngClass]="{'text-gray-700 hover:text-blue-500': !isDarkMode, 'text-gray-300 hover:text-blue-400': isDarkMode}">
+      <i class="fas fa-users"></i>
+      <span>{{ 'Users' | translate }}</span>
+    </a>
+
+    <a routerLink="/tasks" class="flex items-center space-x-4 transition" [ngClass]="{'text-gray-700 hover:text-blue-500': !isDarkMode, 'text-gray-300 hover:text-blue-400': isDarkMode}">
+      <i class="fas fa-tasks"></i>
+      <span>{{ 'Tasks' | translate }}</span>
+    </a>
+
+    <a routerLink="/calendar" class="flex items-center space-x-4 transition" [ngClass]="{'text-gray-700 hover:text-blue-500': !isDarkMode, 'text-gray-300 hover:text-blue-400': isDarkMode}">
+      <i class="fas fa-calendar-alt"></i>
+      <span>{{ 'Calendar' | translate }}</span>
+    </a>
+
+    <button class="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600" (click)="onLogout()">
+      {{ 'Logout' | translate }}
+    </button>
+  </nav>
+
+  <div class="mt-10 flex justify-between items-center">
+    <button class="text-sm" (click)="toggleDarkMode()">
+      {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+    </button>
+
+    <select [(ngModel)]="selectedLanguage" (change)="changeLanguage(selectedLanguage)" class="text-sm bg-transparent">
+      <option value="en">English</option>
+      <option value="pl">Polski</option>
+    </select>
+  </div>
+</aside>
