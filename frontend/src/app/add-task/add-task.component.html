@@ -18,7 +18,7 @@
     
 
         <!-- Add User Form -->
-        <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto">
+        <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto" autocomplete="off">
             <div *ngIf="errorMessage" class="bg-red-100 block border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
                 <strong class="font-bold block">Error!</strong>
                 <span class="block sm:inline">{{ errorMessage }}</span>
@@ -47,7 +47,7 @@
           
             <div class="mb-4">
               <label for="assignedUsers" class="block font-semibold">Assign Users</label>
-              <select id="assignedUsers" formControlName="assignedUsers" multiple class="w-full p-2 border rounded">
+              <select id="assignedUsers" formControlName="assignedUsers" multiple class="w-full p-2 border rounded" autocomplete="off">
                 <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
               </select>
               <div *ngIf="addTaskForm.get('assignedUsers')?.invalid && addTaskForm.get('assignedUsers')?.touched" class="text-red-500">
@@ -57,7 +57,7 @@
           
             <div class="mb-4">
               <label for="priority" class="block font-semibold">Priority</label>
-              <select id="priority" formControlName="priority" class="w-full p-2 border rounded">
+              <select id="priority" formControlName="priority" class="w-full p-2 border rounded" autocomplete="off">
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
@@ -69,7 +69,7 @@
           
             <div class="mb-4">
               <label for="status" class="block font-semibold">Status</label>
-              <select id="status" formControlName="status" class="w-full p-2 border rounded">
+              <select id="status" formControlName="status" class="w-full p-2 border rounded" autocomplete="off">
                 <option value="open">Pending</option>
                 <option value="in-progress">In Progress</option>
                 <option value="completed">Completed</option>
@@ -80,10 +80,10 @@
             </div>
           
             <div class="mb-4">
-              <label for="dueDate" class="block font-semibold">Due Date</label>
-              <input id="dueDate" formControlName="dueDate" type="date" class="w-full p-2 border rounded" />
+              <label for="dueDate" class="block font-semibold">Due Date and Time</label>
+              <input id="dueDate" formControlName="dueDate" type="datetime-local" class="w-full p-2 border rounded" />
               <div *ngIf="addTaskForm.get('dueDate')?.invalid && addTaskForm.get('dueDate')?.touched" class="text-red-500">
-                Due Date is required.
+                Due date and time are required.
               </div>
             </div>
           

@@ -12,22 +12,23 @@ import { EditTaskComponent } from './edit-task/edit-task.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { AddCalendarComponent } from './add-calendar/add-calendar.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { AuthGuard } from './auth.guard';
 
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'users', component: UsersComponent },
-  { path: 'user/:id', component: UserDetailsComponent },
-  { path: 'add/user', component: AddUserComponent },
-  { path: 'edit/user/:id', component: EditUserComponent },
-  { path: 'tasks', component: TaskListComponent },
-  { path: 'add/task', component: AddTaskComponent },
-  { path: 'edit/task/:id', component: EditTaskComponent },
-  { path: 'task/:id', component: TaskDetailComponent },
-  { path: 'add/calendar', component: AddCalendarComponent },
-  { path: 'calendar', component: CalendarComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },  // Redirect to login if no path
-  { path: '**', redirectTo: '/dashboard' }  // Wildcard route for invalid URLs
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+  { path: 'user/:id', component: UserDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'add/user', component: AddUserComponent, canActivate: [AuthGuard] },
+  { path: 'edit/user/:id', component: EditUserComponent, canActivate: [AuthGuard] },
+  { path: 'tasks', component: TaskListComponent, canActivate: [AuthGuard] },
+  { path: 'add/task', component: AddTaskComponent, canActivate: [AuthGuard] },
+  { path: 'edit/task/:id', component: EditTaskComponent, canActivate: [AuthGuard] },
+  { path: 'task/:id', component: TaskDetailComponent, canActivate: [AuthGuard] },
+  { path: 'add/calendar', component: AddCalendarComponent, canActivate: [AuthGuard] },
+  { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' }
 ];

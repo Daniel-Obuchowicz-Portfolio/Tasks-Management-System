@@ -1,5 +1,5 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';  // Import to detect platform
 import { Observable } from 'rxjs';
 
@@ -13,19 +13,14 @@ export class AuthGuard implements CanActivate {
     @Inject(PLATFORM_ID) private platformId: object  // Inject platform ID to check the environment
   ) {}
 
-  canActivate(): boolean | Observable<boolean> | Promise<boolean> {
+  canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     // Check if the code is running in the browser
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('token');
-      if (token) {
-        return true;
-      } else {
-        this.router.navigate(['/login']);
-        return false;
-      }
+      return token ? true : this.router.createUrlTree(['/login']);
     } else {
       // If not in browser, deny access
-      return false;
+      return this.router.createUrlTree(['/login']);
     }
   }
 }

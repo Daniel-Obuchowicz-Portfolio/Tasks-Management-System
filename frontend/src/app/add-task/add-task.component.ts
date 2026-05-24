@@ -24,10 +24,10 @@ export class AddTaskComponent implements OnInit {
     this.addTaskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      assignedUsers: ['', Validators.required],
-      priority: ['', Validators.required],
-      status: ['pending', Validators.required],
-      dueDate: ['', Validators.required]  // Make sure this is part of the form
+      assignedUsers: [[], Validators.required],
+      priority: ['medium', Validators.required],
+      status: ['open', Validators.required],
+      dueDate: ['', Validators.required]
     });
   }
 
@@ -70,12 +70,22 @@ export class AddTaskComponent implements OnInit {
 
     if (this.addTaskForm.valid) {
       this.isLoading = true;
-      const formData = this.addTaskForm.value;
+      const formData = {
+        ...this.addTaskForm.value,
+        assignedUsers: (this.addTaskForm.value.assignedUsers || []).map((userId: string | number) => Number(userId))
+      };
 
       this.http.post('/api/tasks/create', formData, { headers }).subscribe(
         response => {
           this.successMessage = 'Task added successfully!';
-          this.addTaskForm.reset();
+          this.addTaskForm.reset({
+            title: '',
+            description: '',
+            assignedUsers: [],
+            priority: 'medium',
+            status: 'open',
+            dueDate: ''
+          });
           this.isLoading = false;
         },
         error => {
@@ -84,9 +94,18 @@ export class AddTaskComponent implements OnInit {
         }
       );
     } else {
-      // Log form errors for debugging
-      console.error('Form is invalid:', this.addTaskForm.errors);
+      this.addTaskForm.markAllAsTouched();
+      console.error('Form is invalid:', this.getControlErrors());
       this.errorMessage = 'Please fill out all required fields correctly.';
     }
+  }
+
+  private getControlErrors() {
+    return Object.entries(this.addTaskForm.controls).reduce((acc, [key, control]) => {
+      if (control.invalid) {
+        acc[key] = control.errors;
+      }
+      return acc;
+    }, {} as Record<string, unknown>);
   }
 }

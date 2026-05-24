@@ -1,52 +1,43 @@
 import { Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';  // Import RouterModule
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';  // FormsModule dla ngModel
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   standalone: true,
   selector: 'app-header',
-  imports: [
-    CommonModule,
-    FormsModule,  // FormsModule dla ngModel
-    RouterModule,  // RouterModule dla routerLink
-    TranslateModule  // TranslateModule, bez .forRoot()
-  ],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  @Input() title: string = 'Dashboard';
+  @Input() title = 'Dashboard';
   @Input() username: string | null = 'Guest';
   @Input() email: string | null = 'guest@example.com';
 
-  isDarkMode = false;
   selectedLanguage = 'en';
+  navItems = [
+    { route: '/dashboard', icon: 'fas fa-chart-line', label: 'Dashboard' },
+    { route: '/users', icon: 'fas fa-users', label: 'Users' },
+    { route: '/tasks', icon: 'fas fa-list-check', label: 'Tasks' },
+    { route: '/calendar', icon: 'fas fa-calendar-days', label: 'Calendar' }
+  ];
 
-  constructor(private translate: TranslateService) {
-    this.translate.use('en');  // Domyślny język
+  constructor(
+    private translate: TranslateService,
+    private router: Router
+  ) {
+    this.translate.use('en');
   }
-
-  toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    
-    // Dodaj lub usuń klasę `dark-mode` na elemencie <body>
-    const body = document.body;
-    if (this.isDarkMode) {
-      body.classList.add('dark-mode');
-    } else {
-      body.classList.remove('dark-mode');
-    }
-  }
-
 
   changeLanguage(lang: string) {
-    this.translate.use(lang);  // Zmiana języka
+    this.translate.use(lang);
   }
 
   onLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    this.router.navigate(['/login']);
   }
 }

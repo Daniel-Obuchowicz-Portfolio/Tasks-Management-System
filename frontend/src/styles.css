@@ -1,8 +1,212 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body{
-    font-family: 'Montserrat', sans-serif;
+:root {
+  --app-bg: #f4f7fb;
+  --panel: rgba(255, 255, 255, 0.82);
+  --panel-strong: #ffffff;
+  --border-soft: rgba(148, 163, 184, 0.2);
+  --text-main: #102033;
+  --text-muted: #64748b;
+  --brand: #2563eb;
+  --brand-strong: #1d4ed8;
+  --accent: #0f766e;
+  --danger: #dc2626;
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 28%),
+    radial-gradient(circle at top right, rgba(16, 185, 129, 0.09), transparent 25%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+}
+
+.app-main {
+  flex: 1;
+  padding: 28px;
+}
+
+.app-surface {
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.app-card {
+  background: var(--panel-strong);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.app-muted {
+  color: var(--text-muted);
+}
+
+.app-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.app-input {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px 14px;
+  color: var(--text-main);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.app-input:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.app-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 16px;
+  padding: 12px 18px;
+  font-weight: 700;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.app-button:hover {
+  transform: translateY(-1px);
+}
+
+.app-button:disabled {
+  opacity: 0.65;
+  transform: none;
+}
+
+.app-button-primary {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
+  color: #fff;
+  box-shadow: 0 12px 20px rgba(37, 99, 235, 0.22);
+}
+
+.app-button-secondary {
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--text-main);
+}
+
+.app-button-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+}
+
+.app-grid-cards {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.status-open {
+  background: rgba(59, 130, 246, 0.12);
+  color: #1d4ed8;
+}
+
+.status-progress {
+  background: rgba(245, 158, 11, 0.16);
+  color: #b45309;
+}
+
+.status-completed {
+  background: rgba(16, 185, 129, 0.16);
+  color: #047857;
+}
+
+.priority-high {
+  background: rgba(239, 68, 68, 0.14);
+  color: #b91c1c;
+}
+
+.priority-medium {
+  background: rgba(234, 179, 8, 0.18);
+  color: #a16207;
+}
+
+.priority-low {
+  background: rgba(34, 197, 94, 0.14);
+  color: #15803d;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.fc .fc-button-primary {
+  background: #334155 !important;
+  border-color: #334155 !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.fc .fc-daygrid-event {
+  border: 0 !important;
+  border-radius: 10px !important;
+  padding: 2px 6px !important;
+}
+
+.fc-event-task {
+  background: rgba(37, 99, 235, 0.14) !important;
+  color: #1d4ed8 !important;
+}
+
+.fc-event-event {
+  background: rgba(139, 92, 246, 0.14) !important;
+  color: #7c3aed !important;
+}
+
+@media (max-width: 1024px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .app-main {
+    padding: 18px;
+  }
 }

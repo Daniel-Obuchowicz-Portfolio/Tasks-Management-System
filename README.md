@@ -103,7 +103,20 @@ Here are the key API endpoints:
 5. **Delete a User**: Users can be deleted directly from the user list.
 
 ## Screenshots
-![Edit User](https://media1.tenor.com/m/a7aeZxrntk8AAAAC/intensifies-sooning.gif)
+### Dashboard
+Overview with summary cards, today's items and quick navigation.
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Tasks
+Task board with cleaner cards, filters and quick actions.
+
+![Tasks](docs/screenshots/tasks.png)
+
+### Calendar
+Calendar view with task and event scheduling.
+
+![Calendar](docs/screenshots/calendar.png)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

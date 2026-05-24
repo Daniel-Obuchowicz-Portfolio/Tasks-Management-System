@@ -128,3 +128,19 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Project-local caches
+backend/.npm-cache/
+frontend/.npm-cache/
+
+# Frontend build and Angular cache
+frontend/dist/
+frontend/.angular/
+
+# Backend secrets and local env
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Temporary local helper files
+tmp_*.sql

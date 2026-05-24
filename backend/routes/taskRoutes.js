@@ -10,6 +10,7 @@ router.post('/create', authenticateToken, taskController.createTask);
 
 // Get all tasks
 router.get('/', authenticateToken, taskController.getTasks);
+router.get('/get/today', authenticateToken, taskController.getTodayEvents);
 
 // Update task by ID
 router.put('/:id', authenticateToken, taskController.updateTask);
@@ -18,7 +19,6 @@ router.put('/:id', authenticateToken, taskController.updateTask);
 router.delete('/:id', authenticateToken, taskController.deleteTask);
 
 router.get('/:id',authenticateToken, taskController.getTaskById);
-router.get('/get/today', authenticateToken, taskController.getTodayEvents);
 
 
 module.exports = router;

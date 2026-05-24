@@ -1,22 +1,250 @@
-/* Montserrat font for modern typography */
-header {
-    font-family: 'Montserrat', sans-serif;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.app-sidebar {
+  width: 236px;
+  min-height: 100vh;
+  padding: 18px 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-right: 1px solid rgba(226, 232, 240, 0.82);
+  backdrop-filter: blur(18px);
+  box-shadow: 10px 0 30px rgba(148, 163, 184, 0.08);
+}
+
+.app-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 6px 2px;
+}
+
+.app-sidebar__logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: white;
+  background: linear-gradient(135deg, #3b82f6 0%, #14b8a6 100%);
+  box-shadow: 0 14px 24px rgba(37, 99, 235, 0.28);
+}
+
+.app-sidebar__brand h1 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.app-sidebar__eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+
+.app-sidebar__profile,
+.app-sidebar__footer {
+  border-radius: 20px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.app-sidebar__profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-sidebar__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #0f172a;
+  background: linear-gradient(135deg, #bfdbfe 0%, #f0fdf4 100%);
+}
+
+.app-sidebar__name,
+.app-sidebar__role {
+  margin: 0;
+}
+
+.app-sidebar__name {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.app-sidebar__role {
+  margin-top: 2px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.app-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.app-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  color: #334155;
+  text-decoration: none;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.app-sidebar__link:hover,
+.app-sidebar__link.is-active {
+  color: #0f172a;
+  background: rgba(59, 130, 246, 0.12);
+  transform: translateX(2px);
+}
+
+.app-sidebar__link i {
+  width: 18px;
+  text-align: center;
+}
+
+.app-sidebar__footer {
+  margin-top: auto;
+}
+
+.app-sidebar__footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.app-sidebar__footer-label {
+  font-size: 0.88rem;
+  color: #475569;
+}
+
+.app-sidebar__footer select {
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 8px 10px;
+}
+
+@media (max-width: 1024px) {
+  .app-sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: 16px 16px 12px;
+    gap: 14px;
   }
-  
-  nav a {
-    color: #4a5568; /* Gray for links */
+
+  .app-sidebar__brand {
+    padding: 0;
   }
-  
-  nav a:hover {
-    color: #2563eb; /* Primary blue on hover */
+
+  .app-sidebar__profile {
+    padding: 12px 14px;
+    border-radius: 18px;
   }
-  
-  .group-hover\:opacity-100 {
-    opacity: 1 !important;
+
+  .app-sidebar__nav {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
   }
-  
-  .group-hover\:scale-100 {
-    transform: scale(1) !important;
+
+  .app-sidebar__nav::-webkit-scrollbar {
+    display: none;
   }
-  
+
+  .app-sidebar__link {
+    flex: 0 0 auto;
+    padding: 12px 14px;
+    border-radius: 14px;
+    white-space: nowrap;
+  }
+
+  .app-sidebar__link:hover,
+  .app-sidebar__link.is-active {
+    transform: none;
+  }
+
+  .app-sidebar__footer {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 18px;
+  }
+
+  .app-sidebar__footer-row {
+    margin-bottom: 0;
+    gap: 10px;
+  }
+
+  .app-sidebar__footer .app-button {
+    min-width: 132px;
+    padding: 10px 14px;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-sidebar {
+    padding: 14px 14px 10px;
+    gap: 12px;
+  }
+
+  .app-sidebar__brand h1 {
+    font-size: 1rem;
+  }
+
+  .app-sidebar__eyebrow {
+    font-size: 0.68rem;
+  }
+
+  .app-sidebar__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .app-sidebar__name {
+    font-size: 0.98rem;
+  }
+
+  .app-sidebar__role {
+    font-size: 0.82rem;
+  }
+
+  .app-sidebar__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-sidebar__footer-row {
+    width: 100%;
+  }
+
+  .app-sidebar__footer .app-button {
+    width: 100%;
+  }
+}

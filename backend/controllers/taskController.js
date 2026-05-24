@@ -171,25 +171,51 @@ exports.getTaskById = (req, res) => {
 // Get today's events for a user (accessible to all roles)
 exports.getTodayEvents = (req, res) => {
   const today = getTodayDate();
-  const userId = req.user.id; 
+  const userId = req.user.id;
+  const userRole = req.user.role;
 
-  const query = `
-    SELECT id, title, description, date, createdAt 
-    FROM events 
-    WHERE date LIKE ? AND (userIds LIKE ? OR userIds IS NULL)
-  `;
+  const taskQuery = userRole === 'admin'
+    ? `
+      SELECT id, title, description, dueDate AS date, createdAt, 'task' AS itemType
+      FROM tasks
+      WHERE DATE(dueDate) = ?
+    `
+    : `
+      SELECT id, title, description, dueDate AS date, createdAt, 'task' AS itemType
+      FROM tasks
+      WHERE DATE(dueDate) = ?
+        AND JSON_CONTAINS(assignedUsers, JSON_ARRAY(?), '$')
+    `;
 
-  const userFilter = `%${userId}%`;
+  const taskParams = userRole === 'admin' ? [today] : [today, userId];
 
-  db.query(query, [`${today}%`, userFilter], (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: "Error fetching today's events", error: err });
+  db.query(taskQuery, taskParams, (taskErr, taskResults) => {
+    if (taskErr) {
+      return res.status(500).json({ message: "Error fetching today's tasks", error: taskErr });
     }
 
-    if (results.length > 0) {
-      return res.status(200).json(results);
-    }
+    const eventQuery = userRole === 'admin'
+      ? `
+        SELECT id, title, description, date, createdAt, 'event' AS itemType
+        FROM events
+        WHERE DATE(date) = ?
+      `
+      : `
+        SELECT id, title, description, date, createdAt, 'event' AS itemType
+        FROM events
+        WHERE DATE(date) = ?
+          AND (FIND_IN_SET(?, userIds) OR userIds IS NULL)
+      `;
 
-    res.status(200).json([]);
+    const eventParams = userRole === 'admin' ? [today] : [today, userId];
+
+    db.query(eventQuery, eventParams, (eventErr, eventResults) => {
+      if (eventErr) {
+        return res.status(500).json({ message: "Error fetching today's events", error: eventErr });
+      }
+
+      const results = [...taskResults, ...eventResults].sort((a, b) => new Date(a.date) - new Date(b.date));
+      res.status(200).json(results);
+    });
   });
 };

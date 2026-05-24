@@ -1,56 +1,74 @@
-<div class="flex h-screen justify-center items-center">
-  <div class="max-w-md w-full bg-white p-8 shadow-md rounded-md">
-    <h2 class="text-2xl font-bold mb-6">Login</h2>
-
-    <!-- Show error message if login fails -->
-    <div *ngIf="errorMessage" class="bg-red-100 block border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-      <strong class="font-bold block">Error!</strong>
-      <span class="block sm:inline">{{ errorMessage }}</span>
-    </div>
-
-    <!-- Success message -->
-    <div *ngIf="successMessage" class="bg-green-100 block border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-        <strong class="font-bold block">Success!</strong>
-        <span class="block sm:inline">{{ successMessage }}</span>
-    </div>
-
-    <form (ngSubmit)="onSubmit()">
-      <div class="mb-4">
-        <input
-          class="w-full px-4 py-2 border rounded-md"
-          type="text"
-          [(ngModel)]="username"
-          placeholder="Username"
-          name="username"
-          required
-        />
-      </div>
-      <div class="mb-6">
-        <input
-          class="w-full px-4 py-2 border rounded-md"
-          type="password"
-          [(ngModel)]="password"
-          placeholder="Password"
-          name="password"
-          required
-        />
-      </div>
-      <button
-        [disabled]="isLoading"  
-        class="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
-      >
-        <!-- Show "Loading..." while waiting for a response -->
-        {{ isLoading ? 'Loading...' : 'Login' }}
-      </button>
-    </form>
-
-    <!-- Add link to navigate to register page -->
-    <div class="mt-4 text-center">
-      <p>Don't have an account? 
-        <a routerLink="/register" class="text-blue-500 hover:underline">
-          Register here
-        </a>
+<div class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.18),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(20,184,166,0.16),_transparent_24%),linear-gradient(180deg,_#f8fbff_0%,_#eef4fb_100%)] px-4 py-10">
+  <div class="mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+    <section class="hidden rounded-[32px] bg-slate-950 p-10 text-white shadow-2xl lg:block">
+      <p class="app-badge bg-white/10 text-blue-100">Next-gen workspace</p>
+      <h1 class="mt-6 text-5xl font-extrabold leading-tight">
+        Run tasks, people and calendar in one sharp control center.
+      </h1>
+      <p class="mt-6 max-w-xl text-base text-slate-300">
+        Cleaner planning, faster execution and a calmer daily workflow for the whole team.
       </p>
-    </div>
+
+      <div class="mt-10 space-y-4">
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <p class="text-sm uppercase tracking-[0.18em] text-slate-400">Focus</p>
+          <h2 class="mt-2 text-2xl font-bold">Tasks with real due times</h2>
+        </div>
+        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <p class="text-sm uppercase tracking-[0.18em] text-slate-400">Visibility</p>
+          <h2 class="mt-2 text-2xl font-bold">Calendar, workload and team activity in one place</h2>
+        </div>
+      </div>
+    </section>
+
+    <section class="app-card mx-auto w-full max-w-xl p-8 sm:p-10">
+      <p class="app-badge bg-blue-50 text-blue-700">Welcome back</p>
+      <h2 class="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">Sign in to TaskFlow</h2>
+      <p class="mt-3 text-slate-500">Pick up where you left off and manage today’s priorities.</p>
+
+      <div *ngIf="errorMessage" class="mt-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="successMessage" class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+        {{ successMessage }}
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="mt-8 space-y-5">
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700">Username</label>
+          <input
+            class="app-input"
+            type="text"
+            [(ngModel)]="username"
+            placeholder="Enter your username"
+            name="username"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700">Password</label>
+          <input
+            class="app-input"
+            type="password"
+            [(ngModel)]="password"
+            placeholder="Enter your password"
+            name="password"
+            required
+          />
+        </div>
+
+        <button [disabled]="isLoading" class="app-button app-button-primary w-full text-base">
+          <i class="fas fa-right-to-bracket"></i>
+          <span>{{ isLoading ? 'Signing in...' : 'Login' }}</span>
+        </button>
+      </form>
+
+      <div class="mt-8 text-center text-sm text-slate-500">
+        Don’t have an account?
+        <a routerLink="/register" class="font-semibold text-blue-700 hover:text-blue-800">Register here</a>
+      </div>
+    </section>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';  // Import RouterModule for rout
   imports: [HttpClientModule, FormsModule, CommonModule, RouterModule],  // Include CommonModule here
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
   errorMessage: string | null = null;
@@ -20,6 +20,14 @@ export class LoginComponent {
   isLoading: boolean = false;
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  ngOnInit() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      void this.router.navigate(['/dashboard'], { replaceUrl: true });
+    }
+  }
 
   onSubmit() {
     this.errorMessage = null;
@@ -30,14 +38,11 @@ export class LoginComponent {
 
     this.http.post<{ token: string }>('/api/auth/login', loginData).subscribe(
       (response) => {
-        this.successMessage = 'Login successful! Redirecting...';
         localStorage.setItem('token', response.token);
-
-        setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 1500);
+        localStorage.setItem('username', this.username);
 
         this.isLoading = false;
+        void this.router.navigate(['/dashboard'], { replaceUrl: true });
       },
       (error) => {
         this.errorMessage = 'Login failed. Please check your username and password.';

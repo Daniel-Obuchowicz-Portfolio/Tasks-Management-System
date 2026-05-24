@@ -99,10 +99,11 @@
 
         <!-- Due Date Field -->
         <div class="mb-4">
-          <input type="date" formControlName="dueDate" class="w-full p-3 border rounded" />
+          <label class="block font-semibold mb-2">Due Date and Time</label>
+          <input type="datetime-local" formControlName="dueDate" class="w-full p-3 border rounded" />
           <div *ngIf="editTaskForm.get('dueDate')?.invalid && editTaskForm.get('dueDate')?.touched"
             class="text-red-500">
-            Due Date is required.
+            Due date and time are required.
           </div>
         </div>
 

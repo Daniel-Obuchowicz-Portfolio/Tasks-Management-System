@@ -5,22 +5,21 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-calendar-widget',
   standalone: true,
-  imports: [CommonModule],  // Jeśli potrzebujesz modułu CommonModule dla dyrektyw, jak *ngFor
+  imports: [CommonModule],
   templateUrl: './calendar-widget.component.html',
-  styleUrls: ['./calendar-widget.component.css']  // Zwróć uwagę na "styleUrls", a nie "styleUrl"
+  styleUrls: ['./calendar-widget.component.css']
 })
 export class CalendarWidgetComponent implements OnInit {
-  events: any[] = [];  // Lista wydarzeń na dzisiaj
-  isLoading: boolean = false;
+  events: any[] = [];
+  isLoading = false;
   errorMessage: string | null = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.fetchTodayEvents();  // Pobieranie wydarzeń przy inicjalizacji komponentu
+    this.fetchTodayEvents();
   }
 
-  // Pobieranie wydarzeń na dzisiaj dla zalogowanego użytkownika
   fetchTodayEvents() {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -29,7 +28,7 @@ export class CalendarWidgetComponent implements OnInit {
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     });
 
     this.isLoading = true;
@@ -40,8 +39,8 @@ export class CalendarWidgetComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        this.errorMessage = 'Error fetching today\'s events';
-        console.error('Error fetching events:', error);
+        this.errorMessage = 'Error fetching today\'s items';
+        console.error('Error fetching today items:', error);
         this.isLoading = false;
       }
     );
